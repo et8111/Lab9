@@ -44,18 +44,18 @@ namespace Lab8
         static void addCata(List<List<string>> students, List<List<bool>> checker, List<List<string>> catas)
         {
             Console.Write("New catagory: ");
-            catas[0].Add(Console.ReadLine());
+            catas[0].Add(Console.ReadLine());               //add new category
             for(int i = 0;i < students.Count; i++)
             {
-                students[i].Add("[NULL]");
-                checker[i].Add(false);
+                students[i].Add("[NULL]");                  //add 'empty' new catagory to student list
+                checker[i].Add(false);                      //add new category to checker
             }
             Console.WriteLine("New Category Successfully Added!");
 
         }
 
         static void updateStudent(List<List<string>> students, List<List<string>> catas)
-        {
+        {//select category->select student-> add new Data
             int choice1 = 0, choice2 = 0;
             Console.WriteLine("=========================");
             for (int i = 0; i < catas[0].Count; i++)
@@ -78,12 +78,12 @@ namespace Lab8
             t = Console.ReadLine();
             if (t == "3")
             {
-                addCata(students, checker, catas);
+                addCata(students, checker, catas);//to go addCata() and return
                 return;
             }
             else if (t == "2")
             {
-                updateStudent(students, catas);
+                updateStudent(students, catas); // go to updateStudent() and return
                 return;
             }
             students.Add(new List<string>());
