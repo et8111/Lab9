@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 /*
- *I Honestly feel bad for you.
+ *I Honestly feel bad for you. Mine is so extra
  */
 namespace Lab8
 {
@@ -200,7 +200,7 @@ namespace Lab8
                         Console.Write(catas[0][i] + " or " + (i) + " | ");
                     category = FINDER(catas) - 1;
                     checker2[studentNumber][category] = true;//tells the index of student to display on the table
-                }                                      //also triggers the try/catch for format and index exceptions
+                }                                            //also triggers the try/catch for format and index exceptions
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
