@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 /*
- *Removed 'available()' function because the 'checker' list is enough 
+ *Removed 'available()' function because the 'checker' list is enough  asdf
  */
 namespace Lab8
 {
