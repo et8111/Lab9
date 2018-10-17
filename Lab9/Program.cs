@@ -10,6 +10,38 @@ namespace Lab8
 {
     class Program
     {
+        static void SortStuff(ref List<List<string>> student,ref List<List<bool>> checker)
+        {//Look at me doing manual list sorts and clearing memory and what not, im a real programmer!
+            List<string> tempList = new List<string>();
+            List<List<string>> newStudent = new List<List<string>>();
+            List<List<bool>> newChecker = new List<List<bool>>();
+            for (int i = 0; i < student.Count; i++)
+            {
+                tempList.Add(student[i][0]);
+            }
+            tempList.Sort();
+            for (int i = 0; i < tempList.Count; i++)
+            {
+                newChecker.Add(new List<bool>());
+                newStudent.Add(new List<string>());
+                for (int j = 0; j < tempList.Count; j++)
+                {
+                    if (tempList[i] == student[j][0])
+                        for (int s = 0; s < student[j].Count; s++)
+                        {
+                            newStudent[i].Add(student[j][s]);
+                            if (s == student[j].Count - 1)
+                                continue;
+                            newChecker[i].Add(checker[j][s]);
+                        }
+                }
+            }
+            student.Clear();
+            student = newStudent;
+            checker.Clear();
+            checker = newChecker;
+        }
+
         static void print(List<List<string>> students, List<List<bool>> checker, List<List<string>> catas)
         {//just prints the table
             catas[0].ForEach(v => Console.Write(v.PadRight(17)));
@@ -30,11 +62,11 @@ namespace Lab8
             string word = Console.ReadLine();
             if (int.TryParse(word,out int num))
             {
-                return num;
+                return num;                     //straight up return a number if one is entered
             }
             if (item[0].Contains(word))
-                return item[0].IndexOf(word);
-            for (int i = 0; i < item.Count; i++)
+                return item[0].IndexOf(word);       //works for catas and not student2
+            for (int i = 0; i < item.Count; i++)    //this works for student2
                 if (item[i][0] == word)
                     return i+1;
             Console.WriteLine("Invalid Input.");
@@ -43,8 +75,16 @@ namespace Lab8
 
         static void addCata(List<List<string>> students, List<List<bool>> checker, List<List<string>> catas)
         {
+            string temp = "";
+            ask3:
             Console.Write("New catagory: ");
-            catas[0].Add(Console.ReadLine());               //add new category
+            temp = Console.ReadLine();
+            if (string.IsNullOrEmpty(temp))
+            {
+                Console.WriteLine("NO EMPTIES");
+                goto ask3;
+            }
+            catas[0].Add(temp);               //add new category
             for(int i = 0;i < students.Count; i++)
             {
                 students[i].Add("[NULL]");                  //add 'empty' new catagory to student list
@@ -55,20 +95,28 @@ namespace Lab8
         }
 
         static void updateStudent(List<List<string>> students, List<List<string>> catas)
-        {//select category->select student-> add new Data
+        {
+            string temp = "";
             int choice1 = 0, choice2 = 0;
             Console.WriteLine("=========================");
             for (int i = 0; i < catas[0].Count; i++)
                 Console.WriteLine(i+1+ ") " + catas[0][i]);
-            Console.Write("Select Catagory: ");
+            Console.Write("Select Catagory: ");                          //select category->
             choice1 = int.Parse(Console.ReadLine())-1;
             Console.WriteLine("========================");
             for (int i = 0; i < students.Count; i++)
                 Console.WriteLine(i+1+") " + students[i][0] + ": ");
-            Console.Write("Student #: ");
+            Console.Write("Student #: ");                               //select student->
             choice2 = int.Parse(Console.ReadLine())-1;
-            Console.Write("Enter Data: ");
-            students[choice2][choice1] = Console.ReadLine();
+            ask2:
+            Console.Write("Enter Data: ");                             
+            temp = Console.ReadLine();            //Enter new Data
+            if (string.IsNullOrEmpty(temp))
+            {
+                Console.WriteLine("NO EMPTIES");
+                goto ask2;
+            }
+            students[choice2][choice1] = temp;
         }
 
         static void adding(List<List<string>> students, List<List<bool>> checker, List<List<string>> catas)
@@ -86,17 +134,25 @@ namespace Lab8
                 updateStudent(students, catas); // go to updateStudent() and return
                 return;
             }
-            students.Add(new List<string>());
-            checker.Add(new List<bool>());
-            string temp = "";
-            for (int i = 0; i < catas[0].Count; i++)
+            else if (t == "1")
             {
-                Console.Write(catas[0][i]+ ": ");
-                temp = Console.ReadLine();
-                students[students.Count - 1].Add(temp);
-                checker[students.Count - 1].Add(false);
+                students.Add(new List<string>());      //add new 'student' at bottom of list
+                checker.Add(new List<bool>());
+                string temp = "";
+                for (int i = 0; i < catas[0].Count; i++)
+                {
+                ask1:
+                    Console.Write(catas[0][i] + ": ");
+                    temp = Console.ReadLine();
+                    if (string.IsNullOrEmpty(temp))
+                    {
+                        Console.WriteLine("NO EMPTIES");
+                        goto ask1;
+                    }
+                    students[students.Count - 1].Add(temp);
+                    checker[students.Count - 1].Add(false);
+                }
             }
-
         }
 
         static void Main(string[] args)
@@ -124,28 +180,33 @@ namespace Lab8
                     checker2[i].Add(false);
                 }
             }
+            SortStuff(ref students2, ref checker2);
+
             string temp = "";
             int studentNumber, category = 0;
                 while (true)
                 {
-                    try
+                try
+                {
+                    Console.Write("1 to add, any to skip: ");
+                    if (Console.ReadLine() == "1")
                     {
-                        Console.Write("1 to add, any to skip: ");
-                        if (Console.ReadLine() == "1")
-                            adding(students2, checker2, catas);
-                        print(students2, checker2, catas);
-                        Console.Write("Enter student name OR 1-"+students2.Count+": ");
-                        studentNumber = FINDER(students2)-1;
-                        for (int i = 1; i < catas[0].Count; i++)
-                            Console.Write(catas[0][i] + " or " + (i) + " | ");
-                        category = FINDER(catas)-1;
-                        checker2[studentNumber][category] = true;//tells the index of student to display on the table
-                    }                                           //also triggers the try/catch for format and index exceptions
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        continue;
+                        adding(students2, checker2, catas);
+                        SortStuff(ref students2, ref checker2);
                     }
+                    print(students2, checker2, catas);
+                    Console.Write("Enter student name OR 1-" + students2.Count + ": ");
+                    studentNumber = FINDER(students2) - 1;
+                    for (int i = 1; i < catas[0].Count; i++)
+                        Console.Write(catas[0][i] + " or " + (i) + " | ");
+                    category = FINDER(catas) - 1;
+                    checker2[studentNumber][category] = true;//tells the index of student to display on the table
+                }                                      //also triggers the try/catch for format and index exceptions
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    continue;
+                }
                     print(students2, checker2,catas);
                 ask2:
                     Console.Write("Again(y/n): ");
