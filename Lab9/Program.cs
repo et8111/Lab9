@@ -61,9 +61,7 @@ namespace Lab8
         {//based on user input searches for a word or number and returns the index
             string word = Console.ReadLine();
             if (int.TryParse(word,out int num))
-            {
                 return num;                     //straight up return a number if one is entered
-            }
             if (item[0].Contains(word))
                 return item[0].IndexOf(word);       //works for catas and not student2
             for (int i = 0; i < item.Count; i++)    //this works for student2
@@ -163,11 +161,12 @@ namespace Lab8
             { "Bob", "St. Clair Shores", "Pizza"},{ "Jordan", "Warren", "Burgers"},{ "Jay", "Macomb", "Pickles"},{ "Jon", "Huntington Woods", "Ribs"},};
             List<List<string>> students2 = new List<List<string>>();
             List<List<string>> catas = new List<List<string>>();//made this list of a list of string to access the FINDER() function.
+            List<List<bool>> checker2 = new List<List<bool>>();
+
             catas.Add(new List<string>());
             catas[0].Add("Name");
             catas[0].Add("Town");
             catas[0].Add("Food");
-            List<List<bool>> checker2 = new List<List<bool>>();
             for (int i = 0; i < students.GetLength(0); i++)
             {
                 students2.Add(new List<string>());
