@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 /*
- *Messy im not sure it needs to be, but wanted to emphasis 2d array table
+ *Removed 'available()' function because the 'checker' list is enough 
  */
 namespace Lab8
 {
@@ -13,13 +13,11 @@ namespace Lab8
         static void print(List<string> students, List<List<bool>> checker,string temp, List<string> food, List<string> town)
         {//just prints the table
             Console.WriteLine("Name:".PadRight(17) + "Town:".PadRight(17) + "Food:".PadRight(17));
-            Console.WriteLine("===================================================");
+            Console.WriteLine("=".PadLeft(51,'='));
             for (int i = 0; i < students.Count; i++)
-            {
-                Console.Write(students[i].PadRight(16) + "|" + ((checker[i][0] == true) ? town[i] : " ").PadRight(16) + "|"+ ((checker[i][1] == true) ? food[i] : " ").PadRight(16) + "|");
-                Console.WriteLine();
+            {//Conditional statements inside the command line to determine printing town and food or empty strings
+                Console.Write(students[i].PadRight(16) + "|" + ((checker[i][0] == true) ? town[i] : " ").PadRight(16) + "|"+ ((checker[i][1] == true) ? food[i] : " ").PadRight(16) + "|\n");
             }
-            available(checker);
         }
 
         static int FINDER(List<string> item)//Not perfect. entering Michael or Taylor for the second option triggers 'Town' or 'Food'
@@ -34,30 +32,6 @@ namespace Lab8
                 return item.IndexOf(word);
             Console.WriteLine("Invalid Input.");
             return FINDER(item);
-        }
-        static void available(List<List<bool>> checker)
-        {//Lets the user know that theres more of category 1 and/or category 2
-            string s = "";
-            bool and = false;
-            for (int i = 0; i < checker.Count; i++)
-                if (checker[i][1] == false)
-                {
-                    s += "Category 1 is still available";
-                    and = true;
-                    break;
-                }
-            for (int i = 0; i < checker.Count; i++)
-                if (checker[i][1] == false && and == true)
-                {
-                    s += ", and category 2 is still available";
-                    break;
-                }
-                else if (checker[i][0] == false)
-                {
-                    s = "Category 2 is still available";
-                    break;
-                }
-            Console.WriteLine("\n"+s);
         }
 
         static void Main(string[] args)
