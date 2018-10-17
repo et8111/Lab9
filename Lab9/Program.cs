@@ -19,12 +19,11 @@ namespace Lab8
                 Console.Write(students[i].PadRight(16) + "|" + ((checker[i][0] == true) ? town[i] : " ").PadRight(16) + "|"+ ((checker[i][1] == true) ? food[i] : " ").PadRight(16) + "|\n");
             }
         }
-
+        
         static int FINDER(List<string> item)//Not perfect. entering Michael or Taylor for the second option triggers 'Town' or 'Food'
         {//based on user input searches for a word or number and returns the index
-            int num = 0;
             string word = Console.ReadLine();
-            if (int.TryParse(word,out num))
+            if (int.TryParse(word,out int num))
             {
                 return num-1;
             }
