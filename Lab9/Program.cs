@@ -17,7 +17,7 @@ namespace Lab8
             Console.WriteLine("=".PadLeft(catas[0].Count*17,'='));
             for (int i = 0; i < students.Count; i++)
             {//Conditional statements inside the command line to determine printing town and food or empty strings
-                Console.Write(students[i][0].PadRight(16) + "|");
+                Console.Write(((i+1) + ") " +students[i][0]).PadRight(16) + "|");
                 for (int j = 0; j < catas[0].Count-1; j++)
                     Console.Write(((checker[i][j] == true) ? students[i][j + 1] : " ").PadRight(16) + "|");
                 Console.WriteLine();
@@ -30,13 +30,13 @@ namespace Lab8
             string word = Console.ReadLine();
             if (int.TryParse(word,out int num))
             {
-                return num-1;
+                return num;
             }
             if (item[0].Contains(word))
                 return item[0].IndexOf(word);
             for (int i = 0; i < item.Count; i++)
                 if (item[i][0] == word)
-                    return i;
+                    return i+1;
             Console.WriteLine("Invalid Input.");
             return FINDER(item);
         }
@@ -106,7 +106,7 @@ namespace Lab8
             { "Shah", "Newark", "Chicken Wings"},{ "Tim", "Detroit", "Chicken Parm"},{ "Abby", "Traverse City", "Soup"},{ "Blake", "Los Angeles", "Cannolis"},
             { "Bob", "St. Clair Shores", "Pizza"},{ "Jordan", "Warren", "Burgers"},{ "Jay", "Macomb", "Pickles"},{ "Jon", "Huntington Woods", "Ribs"},};
             List<List<string>> students2 = new List<List<string>>();
-            List<List<string>> catas = new List<List<string>>();
+            List<List<string>> catas = new List<List<string>>();//made this list of a list of string to access the FINDER() function.
             catas.Add(new List<string>());
             catas[0].Add("Name");
             catas[0].Add("Town");
@@ -115,11 +115,14 @@ namespace Lab8
             for (int i = 0; i < students.GetLength(0); i++)
             {
                 students2.Add(new List<string>());
-                for (int j = 0; j < students.GetLength(1); j++)
-                    students2[i].Add(students[i, j]);
                 checker2.Add(new List<bool>());
-                checker2[i].Add(false);
-                checker2[i].Add(false);
+                for (int j = 0; j < students.GetLength(1); j++)
+                {
+                    students2[i].Add(students[i, j]);
+                    if (j == students.GetLength(1) - 1) //I wan't there to be 1 less category then student because of the name.
+                        continue;
+                    checker2[i].Add(false);
+                }
             }
             string temp = "";
             int studentNumber, category = 0;
@@ -132,11 +135,11 @@ namespace Lab8
                             adding(students2, checker2, catas);
                         print(students2, checker2, catas);
                         Console.Write("Enter student name OR 1-"+students2.Count+": ");
-                        studentNumber = FINDER(students2);
+                        studentNumber = FINDER(students2)-1;
                         for (int i = 1; i < catas[0].Count; i++)
                             Console.Write(catas[0][i] + " or " + (i) + " | ");
-                        category = FINDER(catas)+1;
-                        checker2[studentNumber][category-1] = true;//tells the index of student to display on the table
+                        category = FINDER(catas)-1;
+                        checker2[studentNumber][category] = true;//tells the index of student to display on the table
                     }                                           //also triggers the try/catch for format and index exceptions
                     catch (Exception ex)
                     {
